@@ -1,0 +1,30 @@
+File "/usr/local/lib/python3.8/site-packages/selenium/webdriver/common/service.py", line 81, in start
+superset_worker       |     raise WebDriverException(
+superset_worker       | selenium.common.exceptions.WebDriverException: Message: 'geckodriver' executable needs to be in PATH. 
+superset_worker       | 
+superset_worker       | 
+superset_worker       | The above exception was the direct cause of the following exception:
+superset_worker       | 
+superset_worker       | Traceback (most recent call last):
+superset_worker       |   File "/app/superset/tasks/scheduler.py", line 87, in execute
+superset_worker       |     AsyncExecuteReportScheduleCommand(
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 719, in run
+superset_worker       |     raise ex
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 715, in run
+superset_worker       |     ReportScheduleStateMachine(
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 673, in run
+superset_worker       |     state_cls(
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 574, in next
+superset_worker       |     raise first_ex
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 543, in next
+superset_worker       |     self.send()
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 440, in send
+superset_worker       |     notification_content = self._get_notification_content()
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 347, in _get_notification_content
+superset_worker       |     screenshot_data = self._get_screenshots()
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 226, in _get_screenshots
+superset_worker       |     raise ReportScheduleScreenshotFailedError(
+superset_worker       | superset.reports.commands.exceptions.ReportScheduleScreenshotFailedError: Failed taking a screenshot Message: 'geckodriver' executable needs to be in PATH. 
+superset_worker       | 
+superset_worker       | [2024-06-04 18:19:00,828: INFO/ForkPoolWorker-1] Task reports.execute[3af9b612-e121-4c57-aee5-f869cd4dc0f2] succeeded in 0.6769519941881299s: None
+^Ccanceled
