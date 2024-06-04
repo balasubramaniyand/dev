@@ -1,0 +1,102 @@
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) database is locked
+superset_app          | [SQL: SELECT ab_user.id AS ab_user_id, ab_user.first_name AS ab_user_first_name, ab_user.last_name AS ab_user_last_name, ab_user.username AS ab_user_username, ab_user.password AS ab_user_password, ab_user.active AS ab_user_active, ab_user.email AS ab_user_email, ab_user.last_login AS ab_user_last_login, ab_user.login_count AS ab_user_login_count, ab_user.fail_login_count AS ab_user_fail_login_count, ab_user.created_on AS ab_user_created_on, ab_user.changed_on AS ab_user_changed_on, ab_user.created_by_fk AS ab_user_created_by_fk, ab_user.changed_by_fk AS ab_user_changed_by_fk 
+superset_app          | FROM ab_user 
+superset_app          | WHERE ab_user.id = ?]
+superset_app          | [parameters: (1,)]
+superset_app          | (Background on this error at: https://sqlalche.me/e/14/e3q8)
+superset_app          | 10.10.250.47 - - [04/Jun/2024:17:51:21 +0000] "GET /superset/welcome/ HTTP/1.0" 500 0 "https://www.google.com/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+^Ccanceled
+import os
+from celery.schedules import crontab
+from typing import Optional
+from cachelib.file import FileSystemCache
+
+# Define the database dialect
+DATABASE_DIALECT = 'postgresql'
+
+# Define database connection details
+DATABASE_USER = "superset"
+DATABASE_PASSWORD = "superset"
+DATABASE_HOST = "localhost"
+DATABASE_PORT = "5432"
+DATABASE_DB = "postgresql"
+
+# Define other configurations
+ENABLE_CORS = True
+PREFERRED_URL_SCHEME = 'https'
+SUPERSET_WEBSERVER_PROTOCOL = "https"
+SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_HTTPONLY = False
+WTF_CSRF_ENABLED = False
+ALERT_REPORTS_NOTIFICATION_DRY_RUN = False
+ENABLE_PROXY_FIX = True
+#PROXY_FIX_CONFIG = {"x_for": 1, "x_proto": 1, "x_host": 1, "x_port": 0, "x_prefix": 1}
+#ENABLE_TEMPLATE_PROCESSING = True
+TEMPLATES_EXTENSIONS = ['superset_jinja2_ext']
+LOGIN_REDIRECT_URL = '/login'
+DISABLED_TOP_LEVEL_NAV_ITEMS = ['Dashboards', 'Charts', 'Data', 'Settings', 'Datasets']
+
+# Define the Redis configuration
+REDIS_HOST = os.environ.get("REDIS_HOST")
+REDIS_PORT = os.environ.get("REDIS_PORT")
+REDIS_CELERY_DB = os.environ.get("REDIS_CELERY_DB", "0")
+REDIS_RESULTS_DB = os.environ.get("REDIS_RESULTS_DB", "1")
+RESULTS_BACKEND = FileSystemCache("/app/superset_home/sqllab")
+
+# Define the Celery configuration
+class CeleryConfig(object):
+    BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_CELERY_DB}"
+    CELERY_IMPORTS = ("superset.sql_lab", "superset.tasks")
+    CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_RESULTS_DB}"
+    CELERYD_LOG_LEVEL = "DEBUG"
+    CELERYD_PREFETCH_MULTIPLIER = 1
+    CELERY_ACKS_LATE = False
+    CELERYBEAT_SCHEDULE = {
+        "reports.scheduler": {
+            "task": "reports.scheduler",
+            "schedule": crontab(minute="*", hour="*"),
+        },
+        "reports.prune_log": {
+            "task": "reports.prune_log",
+            "schedule": crontab(minute=10, hour=0),
+        },
+    }
+
+CELERY_CONFIG = CeleryConfig
+
+# Define the SMTP email configuration
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT = 587
+SMTP_STARTTLS = True
+SMTP_SSL_SERVER_AUTH = True
+SMTP_SSL = False
+SMTP_USER = "iopexdashboard@gmail.com"
+SMTP_PASSWORD = "vxcjhrfvuylgwfcb"
+SMTP_MAIL_FROM = "iopexdashboard@gmail.com"
+EMAIL_REPORTS_SUBJECT_PREFIX = "[Superset] "
+SQLLAB_CTAS_NO_LIMIT = True
+
+# Define the WebDriver configuration
+WEBDRIVER_TYPE = "chrome"
+WEBDRIVER_OPTION_ARGS = [
+    "--force-device-scale-factor=2.0",
+    "--high-dpi-support=2.0",
+    "--headless",
+    "--disable-gpu",
+    "--disable-dev-shm-usage",
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    "--disable-extensions",
+]
+WEBDRIVER_BASEURL = "https://dev.opexwise.ai:8003"
+SECRET_KEY = "JaTfw+hlw5quXcwKGGqQpFou7pBX55OfEiLHD6ZiHfbVlKidQw2GiG12"
+
+FEATURE_FLAGS = { 
+        "ALERT_REPORTS" : True
+
+        }
+
+ENABLE_PROXY_FIX = True
+PROXY_FIX_CONFIG = {"x_for": 1, "x_proto": 1, "x_host": 1, "x_port": 0, "x_prefix": 1}
+
