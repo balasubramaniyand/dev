@@ -1,0 +1,94 @@
+import os
+from celery.schedules import crontab
+from typing import Optional
+from cachelib.file import FileSystemCache
+
+# Database Configuration
+DATABASE_DIALECT = 'postgresql'
+DATABASE_USER = "superset"
+DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")  # Use environment variable for security
+DATABASE_HOST = "localhost"
+DATABASE_PORT = "5432"
+DATABASE_DB = "your_database_name"  # Replace with your actual database name
+
+# Security Configuration
+ENABLE_CORS = True
+PREFERRED_URL_SCHEME = 'https'
+SUPERSET_WEBSERVER_PROTOCOL = "https"
+SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SECURE = True  # Secure cookies for HTTPS connections
+SESSION_COOKIE_HTTPONLY = True
+WTF_CSRF_ENABLED = True  # Consider enabling CSRF protection for security
+ALERT_REPORTS_NOTIFICATION_DRY_RUN = False
+ENABLE_PROXY_FIX = True
+PROXY_FIX_CONFIG = {"x_for": 1, "x_proto": 1, "x_host": 1, "x_port": 0, "x_prefix": 1}
+
+# Other Configurations
+TEMPLATES_EXTENSIONS = ['superset_jinja2_ext']
+LOGIN_REDIRECT_URL = '/login'
+DISABLED_TOP_LEVEL_NAV_ITEMS = ['Dashboards', 'Charts', 'Data', 'Settings', 'Datasets']
+
+# Redis and Celery Configuration
+REDIS_HOST = os.environ.get("REDIS_HOST")
+REDIS_PORT = os.environ.get("REDIS_PORT")
+REDIS_CELERY_DB = os.environ.get("REDIS_CELERY_DB", "0")
+REDIS_RESULTS_DB = os.environ.get("REDIS_RESULTS_DB", "1")
+RESULTS_BACKEND = FileSystemCache("/app/superset_home/sqllab")
+
+class CeleryConfig(object):
+    BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_CELERY_DB}"
+    CELERY_IMPORTS = ("superset.sql_lab", "superset.tasks")
+    CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_RESULTS_DB}"
+    CELERYD_LOG_LEVEL = "DEBUG"
+    CELERYD_PREFETCH_MULTIPLIER = 1
+    CELERY_ACKS_LATE = False
+    CELERYBEAT_SCHEDULE = {
+        "reports.scheduler": {
+            "task": "reports.scheduler",
+            "schedule": crontab(minute="*", hour="*"),
+        },
+        "reports.prune_log": {
+            "task": "reports.prune_log",
+            "schedule": crontab(minute=10, hour=0),
+        },
+    }
+
+CELERY_CONFIG = CeleryConfig
+
+# SMTP Email Configuration
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT = 587
+SMTP_STARTTLS = True
+SMTP_SSL_SERVER_AUTH = True
+SMTP_SSL = False
+SMTP_USER = os.environ.get("SMTP_USER")  # Use environment variable for security
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")  # Use environment variable for security
+SMTP_MAIL_FROM = os.environ.get("SMTP_MAIL_FROM")  # Use environment variable for security
+EMAIL_REPORTS_SUBJECT_PREFIX = "[Superset] "
+SQLLAB_CTAS_NO_LIMIT = True
+
+# WebDriver Configuration
+WEBDRIVER_TYPE = "chrome"
+WEBDRIVER_OPTION_ARGS = [
+    "--force-device-scale-factor=2.0",
+    "--high-dpi-support=2.0",
+    "--headless",
+    "--disable-gpu",
+    "--disable-dev-shm-usage",
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    "--disable-extensions",
+]
+WEBDRIVER_BASEURL = "https://dev.opexwise.ai:8003"
+SECRET_KEY = os.environ.get("SECRET_KEY")  # Use environment variable for security
+
+FEATURE_FLAGS = {
+    "ALERT_REPORTS": True
+}
+
+# Function to Resolve Invalid Cookie Domain Error (Optional, for reference)
+def get_screenshot(report_url, user, driver):
+    """
+    Captures a screenshot of the report URL using Selenium, ensuring the cookie domain aligns with the report URL
+    """
+    # Implementation here
