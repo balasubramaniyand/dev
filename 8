@@ -1,0 +1,11 @@
+File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1819, in _execute_context
+superset_app          |     self.dialect.do_execute(
+superset_app          |   File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 732, in do_execute
+superset_app          |     cursor.execute(statement, parameters)
+superset_app          | sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) database is locked
+superset_app          | [SQL: SELECT ab_role.id AS ab_role_id, ab_role.name AS ab_role_name 
+superset_app          | FROM ab_role 
+superset_app          | WHERE ab_role.name = ?]
+superset_app          | [parameters: ('Public',)]
+superset_app          | (Background on this error at: https://sqlalche.me/e/14/e3q8)
+superset_app          | 10.10.250.47 - - [04/Jun/2024:18:35:32 +0000] "GET /login/ HTTP/1.0" 500 0 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0"
