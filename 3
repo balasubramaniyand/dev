@@ -1,0 +1,13 @@
+ | 2024-06-04 17:56:35,265:WARNING:superset.utils.cache_manager:Falling back to the built-in cache, that stores data in the metadata database, for the following cache: `EXPLORE_FORM_DATA_CACHE_CONFIG`. It is recommended to use `RedisCache`, `MemcachedCache` or another dedicated caching backend for production deployments
+superset_worker_beat  | Skipping local overrides
+superset_worker_beat  | Starting Celery beat...
+superset_app          | 2024-06-04 17:56:35,268:ERROR:flask_appbuilder.security.sqla.manager:DB Creation and initialization failed: (psycopg2.OperationalError) connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused
+superset_app          | 	Is the server running on that host and accepting TCP/IP connections?
+superset_app          | connection to server at "localhost" (::1), port 5432 failed: Cannot assign requested address
+superset_app          | 	Is the server running on that host and accepting TCP/IP connections?
+superset_app          | 
+superset_app          | (Background on this error at: https://sqlalche.me/e/14/e3q8)
+superset_app          | [2024-06-04 17:56:35 +0000] [82] [INFO] Worker exiting (pid: 82)
+superset_app          | Loaded your LOCAL configuration at [/app/docker/pythonpath_dev/superset_config.py]
+superset_app          | [2024-06-04 17:56:35 +0000] [91] [INFO] Booting worker with pid: 91
+^Ccanceled
