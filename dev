@@ -1,0 +1,90 @@
+ superset.reports.commands.exceptions.ReportScheduleScreenshotFailedError: Failed taking a screenshot Message: invalid cookie domain
+superset_worker       |   (Session info: headless chrome=115.0.5790.170)
+superset_worker       | 
+superset_worker       | [2024-06-04 15:44:02,183: ERROR/ForkPoolWorker-2] A downstream exception occurred while generating a report: 95eb627a-7ff8-4fdd-9a89-3ed33577eb8d. Failed taking a screenshot Message: invalid cookie domain
+superset_worker       |   (Session info: headless chrome=115.0.5790.170)
+superset_worker       | Traceback (most recent call last):
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 221, in _get_screenshots
+superset_worker       |     image = screenshot.get_screenshot(user=user)
+superset_worker       |   File "/app/superset/utils/screenshots.py", line 82, in get_screenshot
+superset_worker       |     self.screenshot = driver.get_screenshot(self.url, self.element, user)
+superset_worker       |   File "/app/superset/utils/webdriver.py", line 172, in get_screenshot
+superset_worker       |     driver = self.auth(user)
+superset_worker       |   File "/app/superset/utils/webdriver.py", line 151, in auth
+superset_worker       |     return machine_auth_provider_factory.instance.authenticate_webdriver(
+superset_worker       |   File "/app/superset/utils/machine_auth.py", line 69, in authenticate_webdriver
+superset_worker       |     driver.add_cookie(dict(name=cookie_name, value=cookie_val))
+superset_worker       |   File "/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 894, in add_cookie
+superset_worker       |     self.execute(Command.ADD_COOKIE, {'cookie': cookie_dict})
+superset_worker       |   File "/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+superset_worker       |     self.error_handler.check_response(response)
+superset_worker       |   File "/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+superset_worker       |     raise exception_class(message, screen, stacktrace)
+superset_worker       | selenium.common.exceptions.InvalidCookieDomainException: Message: invalid cookie domain
+superset_worker       |   (Session info: headless chrome=115.0.5790.170)
+superset_worker       | 
+superset_worker       | 
+superset_worker       | The above exception was the direct cause of the following exception:
+superset_worker       | 
+superset_worker       | Traceback (most recent call last):
+superset_worker       |   File "/app/superset/tasks/scheduler.py", line 87, in execute
+superset_worker       |     AsyncExecuteReportScheduleCommand(
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 719, in run
+superset_worker       |     raise ex
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 715, in run
+superset_worker       |     ReportScheduleStateMachine(
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 673, in run
+superset_worker       |     state_cls(
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 574, in next
+superset_worker       |     raise first_ex
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 543, in next
+superset_worker       |     self.send()
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 440, in send
+superset_worker       |     notification_content = self._get_notification_content()
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 347, in _get_notification_content
+superset_worker       |     screenshot_data = self._get_screenshots()
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 226, in _get_screenshots
+superset_worker       |     raise ReportScheduleScreenshotFailedError(
+superset_worker       | superset.reports.commands.exceptions.ReportScheduleScreenshotFailedError: Failed taking a screenshot Message: invalid cookie domain
+superset_worker       |   (Session info: headless chrome=115.0.5790.170)
+superset_worker       | 
+superset_worker       | [2024-06-04 15:44:02,188: INFO/ForkPoolWorker-2] Task reports.execute[95eb627a-7ff8-4fdd-9a89-3ed33577eb8d] succeeded in 2.0214994745329022s: None
+superset_worker       | [2024-06-04 15:45:00,053: INFO/MainProcess] Task reports.scheduler[bbae6497-80b3-445b-b184-2dbf538ad62a] received
+superset_worker       | SQLite Database support for metadata databases will be removed             in a future version of Superset.
+superset_worker       | [2024-06-04 15:45:00,055: WARNING/ForkPoolWorker-2] SQLite Database support for metadata databases will be removed             in a future version of Superset.
+superset_worker       | Scheduling alert git eta: 2024-06-04 15:45:00
+superset_worker       | [2024-06-04 15:45:00,122: INFO/ForkPoolWorker-2] Scheduling alert git eta: 2024-06-04 15:45:00
+superset_worker       | [2024-06-04 15:45:00,126: INFO/MainProcess] Task reports.execute[1e87fe7d-0ada-4247-a68d-5cf28b010e00] received
+superset_worker       | [2024-06-04 15:45:00,127: INFO/ForkPoolWorker-2] Task reports.scheduler[bbae6497-80b3-445b-b184-2dbf538ad62a] succeeded in 0.0720715718343854s: None
+superset_worker       | Executing alert/report, task id: 1e87fe7d-0ada-4247-a68d-5cf28b010e00, scheduled_dttm: 2024-06-04T15:45:00
+superset_worker       | [2024-06-04 15:45:00,128: INFO/ForkPoolWorker-2] Executing alert/report, task id: 1e87fe7d-0ada-4247-a68d-5cf28b010e00, scheduled_dttm: 2024-06-04T15:45:00
+superset_worker       | SQLite Database support for metadata databases will be removed             in a future version of Superset.
+superset_worker       | [2024-06-04 15:45:00,128: WARNING/ForkPoolWorker-2] SQLite Database support for metadata databases will be removed             in a future version of Superset.
+superset_worker       | session is validated: id 1, executionid: 1e87fe7d-0ada-4247-a68d-5cf28b010e00
+superset_worker       | [2024-06-04 15:45:00,129: INFO/ForkPoolWorker-2] session is validated: id 1, executionid: 1e87fe7d-0ada-4247-a68d-5cf28b010e00
+superset_worker       | Running report schedule 1e87fe7d-0ada-4247-a68d-5cf28b010e00 as user admin
+superset_worker       | [2024-06-04 15:45:00,145: INFO/ForkPoolWorker-2] Running report schedule 1e87fe7d-0ada-4247-a68d-5cf28b010e00 as user admin
+superset_worker       | Init selenium driver
+superset_worker       | [2024-06-04 15:45:00,209: INFO/ForkPoolWorker-2] Init selenium driver
+superset_worker       | A downstream exception occurred while generating a report: 1e87fe7d-0ada-4247-a68d-5cf28b010e00. Failed taking a screenshot Message: invalid cookie domain
+superset_worker       |   (Session info: headless chrome=115.0.5790.170)
+superset_worker       | Traceback (most recent call last):
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 221, in _get_screenshots
+superset_worker       |     image = screenshot.get_screenshot(user=user)
+superset_worker       |   File "/app/superset/utils/screenshots.py", line 82, in get_screenshot
+superset_worker       |     self.screenshot = driver.get_screenshot(self.url, self.element, user)
+superset_worker       |   File "/app/superset/utils/webdriver.py", line 172, in get_screenshot
+superset_worker       |     driver = self.auth(user)
+superset_worker       |   File "/app/superset/utils/webdriver.py", line 151, in auth
+superset_worker       |     return machine_auth_provider_factory.instance.authenticate_webdriver(
+superset_worker       |   File "/app/superset/utils/machine_auth.py", line 69, in authenticate_webdriver
+superset_worker       |     driver.add_cookie(dict(name=cookie_name, value=cookie_val))
+superset_worker       |   File "/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 894, in add_cookie
+superset_worker       |     self.execute(Command.ADD_COOKIE, {'cookie': cookie_dict})
+superset_worker       |   File "/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+superset_worker       |     self.error_handler.check_response(response)
+superset_worker       |   File "/usr/local/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+superset_worker       |     raise exception_class(message, screen, stacktrace)
+superset_worker       | selenium.common.exceptions.InvalidCookieDomainException: Message: invalid cookie domain
+superset_worker       |   (Session info: headless chrome=115.0.5790.170)
+superset_worker       | 
