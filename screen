@@ -1,0 +1,33 @@
+ck_response
+superset_worker       |     raise exception_class(message, screen, stacktrace)
+superset_worker       | selenium.common.exceptions.InvalidCookieDomainException: Message: invalid cookie domain
+superset_worker       |   (Session info: headless chrome=115.0.5790.170)
+superset_worker       | 
+superset_worker       | 
+superset_worker       | The above exception was the direct cause of the following exception:
+superset_worker       | 
+superset_worker       | Traceback (most recent call last):
+superset_worker       |   File "/app/superset/tasks/scheduler.py", line 87, in execute
+superset_worker       |     AsyncExecuteReportScheduleCommand(
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 719, in run
+superset_worker       |     raise ex
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 715, in run
+superset_worker       |     ReportScheduleStateMachine(
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 673, in run
+superset_worker       |     state_cls(
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 574, in next
+superset_worker       |     raise first_ex
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 543, in next
+superset_worker       |     self.send()
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 440, in send
+superset_worker       |     notification_content = self._get_notification_content()
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 347, in _get_notification_content
+superset_worker       |     screenshot_data = self._get_screenshots()
+superset_worker       |   File "/app/superset/reports/commands/execute.py", line 226, in _get_screenshots
+superset_worker       |     raise ReportScheduleScreenshotFailedError(
+superset_worker       | superset.reports.commands.exceptions.ReportScheduleScreenshotFailedError: Failed taking a screenshot Message: invalid cookie domain
+superset_worker       |   (Session info: headless chrome=115.0.5790.170)
+superset_worker       | 
+superset_worker       | [2024-06-05 01:37:04,079: INFO/ForkPoolWorker-1] Task reports.execute[3f681756-f609-4a54-933f-d5c6e90cfd6b] succeeded in 3.8943682024255395s: None
+
+
